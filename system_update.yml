@@ -1,0 +1,15 @@
+- name: Update and upgrade system packages
+  hosts: vm_inv
+  become: True
+  tasks:
+    - name: Update apt repositories
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all apt packages
+      apt:
+        upgrade: yes
+        autoremove: yes
+        autoclean: yes
+        force_apt_get: yes

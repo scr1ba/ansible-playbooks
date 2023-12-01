@@ -1,0 +1,37 @@
+- name: Application Deployment using Docker and Docker Compose on Ubuntu Server 22.04 LTS
+  hosts: vm_inv
+  become: True
+  tasks:
+    - name: Pull latest Container images
+      docker_image:
+        name: "{{ item }}"
+        source: pull
+        state: present
+      loop:
+        - your_image1:latest
+        - your_image2:latest
+        # Add more images as required
+
+    - name: Copy Docker Compose file to the remote host
+      ansible.builtin.copy:
+        src: /path/to/your/docker-compose.yml
+        dest: /remote/path/to/docker-compose.yml
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Deploy applications using Docker Compose
+      community.docker.docker_compose:
+        project_src: /remote/path/to
+        files:
+          - docker-compose.yml
+        state: present
+        pull: yes
+        build: no
+        recreate: smart
+        restarted: yes
+
+    - name: Ensure the Docker services are running
+      community.docker.docker_service:
+        project_src: /remote/path/to
+        state: running

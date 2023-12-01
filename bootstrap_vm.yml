@@ -1,0 +1,12 @@
+- name: Main Playbook to Run Others Sequentially and bootstrap a virtual machine from scratch
+  hosts: vm_inv
+  become: True
+  tasks:
+    - name: Run VM Reachability Test
+      import_playbook: vm_reachability_test.yml
+
+    - name: Run System Update
+      import_playbook: system_update.yml
+
+    - name: Run Docker Setup
+      import_playbook: docker_setup.yml
