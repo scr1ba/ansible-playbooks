@@ -1,6 +1,6 @@
 - name: Configure Google Cloud credentials for Docker.
   hosts: vm_inv
-  become: True
+  become: False
   tasks:
     - name: Configure gcloud credentials for Docker
       command: gcloud auth configure-docker europe-west4-docker.pkg.dev --quiet
@@ -8,4 +8,4 @@
       changed_when: false
 
     - debug:
-        var: compose_version.stdout
+        var: gcloud_auth
